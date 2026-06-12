@@ -1,13 +1,21 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Closing wave">
-  <!-- Neutral closing / thank-you background. The .oncolor slide sets text + logo to white
-       over this. Recolour the gradient stops for your brand. -->
+  <!-- Neutral closing / thank-you background: one large deep-blue form with a sweeping
+       cut at the bottom-left corner (white + a pale rim peeking along the curve), echoing
+       the divider's wave language. The .oncolor slide sets text + logo to white over this.
+       Recolour the gradient stops + rim for your brand. -->
   <defs>
-    <linearGradient id="closeBg" x1="0" y1="0" x2="0.35" y2="1">
-      <stop offset="0" stop-color="#3A6796"/>
-      <stop offset="1" stop-color="#2B527A"/>
+    <linearGradient id="closeBg" x1="0" y1="0" x2="0.9" y2="1">
+      <stop offset="0" stop-color="#3F70A0"/>
+      <stop offset="1" stop-color="#27496B"/>
     </linearGradient>
   </defs>
-  <rect width="1280" height="720" fill="url(#closeBg)"/>
-  <path d="M0 158 C 372 120 604 184 904 156 C 1112 138 1202 160 1280 150 L1280 0 L0 0 Z" fill="#ffffff" fill-opacity="0.05"/>
-  <path d="M0 690 C 360 654 600 716 920 688 C 1120 670 1210 690 1280 682 L1280 720 L0 720 Z" fill="#ffffff" fill-opacity="0.07"/>
+  <rect width="1280" height="720" fill="#ffffff"/>
+  <!-- pale rim that peeks along the cut edge -->
+  <path d="M0 0 H1280 V720 H560 C 330 718 130 656 0 506 Z" fill="#BFD4E8"/>
+  <!-- the main deep form, corner-cut bottom-left -->
+  <path d="M0 0 H1280 V720 H610 C 380 712 160 632 0 458 Z" fill="url(#closeBg)"/>
+  <!-- faint arc top-right for depth -->
+  <path d="M760 0 C 900 120 1120 180 1280 190 L1280 0 Z" fill="#ffffff" fill-opacity=".05"/>
+  <!-- small white wave accent in the bottom-right corner -->
+  <path d="M980 720 C 1080 660 1200 640 1280 648 L1280 720 Z" fill="#ffffff" fill-opacity=".9"/>
 </svg>

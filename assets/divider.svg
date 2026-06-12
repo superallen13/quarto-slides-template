@@ -1,14 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Section divider wave">
-  <!-- Neutral section-divider wave. Recolour the two fills (or the gradient) for your brand,
-       or replace this file. background-size="cover" fits this 16:9 art onto the 16:9 page
-       exactly (see the divider GOTCHA in theme/_base.scss). -->
+  <!-- Neutral section-divider wave (also the cover's footer). Asymmetric: the crest rides
+       high on the left and eases down to the right. Recolour the fills/gradient for your
+       brand, or replace this file. background-size="cover" fits this 16:9 art onto the
+       16:9 page exactly (see the divider GOTCHA in theme/_base.scss). -->
   <defs>
-    <linearGradient id="dividerWave" x1="0" y1="0" x2="0" y2="1">
+    <linearGradient id="dividerWave" x1="0" y1="0" x2="1" y2="0.25">
       <stop offset="0" stop-color="#3D6E9C"/>
-      <stop offset="1" stop-color="#2E587F"/>
+      <stop offset="1" stop-color="#2B527A"/>
     </linearGradient>
   </defs>
   <rect width="1280" height="720" fill="#ffffff"/>
-  <path d="M0 584 C 360 548 560 610 864 586 C 1086 568 1192 590 1280 580 L1280 720 L0 720 Z" fill="#E0EAF4"/>
-  <path d="M0 632 C 372 596 604 658 904 632 C 1112 614 1202 634 1280 626 L1280 720 L0 720 Z" fill="url(#dividerWave)"/>
+  <!-- light under-wave, higher on the left -->
+  <path d="M0 540 C 220 500 420 560 640 588 C 880 618 1100 600 1280 626 L1280 720 L0 720 Z" fill="#DDE9F5"/>
+  <!-- main gradient wave -->
+  <path d="M0 600 C 240 556 470 612 700 634 C 930 656 1120 648 1280 668 L1280 720 L0 720 Z" fill="url(#dividerWave)"/>
+  <!-- accent hairline floating just above the crest -->
+  <path d="M0 586 C 240 542 470 598 700 620 C 930 642 1120 634 1280 654" fill="none" stroke="#34618C" stroke-opacity=".4" stroke-width="3"/>
 </svg>
