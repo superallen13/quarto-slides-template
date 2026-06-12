@@ -12,6 +12,20 @@ it live as you type, and export a deterministic PDF.
 - **Deterministic PDF.** `python tools/render_pdf.py`: one pass, no render lottery.
 - **Lightweight.** Quarto + Python + Playwright. No node, npm, or decktape.
 
+## Two built-in themes
+
+A neutral default and a University of Queensland example, switchable with one command
+(`python tools/init.py --brand uq`). Same `slides.qmd`, different brand bundle — cover,
+a math slide, and the closing wave:
+
+**Neutral** (default)
+
+![Neutral theme preview: cover, math slide, closing wave](assets/preview/neutral.png)
+
+**University of Queensland**
+
+![University of Queensland theme preview: cover, math slide, closing wave](assets/preview/uq.png)
+
 ## Quickstart
 
 **1. Get the template.** On GitHub click **Use this template → Create a new repository**
