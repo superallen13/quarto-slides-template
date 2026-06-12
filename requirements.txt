@@ -1,0 +1,3 @@
+# PDF rendering (tools/render_pdf.py). Drives the system Chrome via channel="chrome";
+# `playwright install chromium` is OPTIONAL (only needed if no system Chrome).
+playwright>=1.40

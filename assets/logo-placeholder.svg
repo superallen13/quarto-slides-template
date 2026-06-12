@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 132 120" role="img" aria-label="Logo placeholder">
+  <!-- A simple geometric mark on a transparent background so the thank-you slide's
+       brightness(0) invert(1) recolour produces a clean white silhouette.
+       Replace this with your institution's logo (point the YAML `logo:` field at it). -->
+  <path d="M60 12 L106 39 V81 L60 108 L14 81 V39 Z" fill="none" stroke="#34618C" stroke-width="9" stroke-linejoin="round"/>
+  <circle cx="60" cy="60" r="15" fill="#34618C"/>
+</svg>

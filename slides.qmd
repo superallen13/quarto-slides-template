@@ -1,0 +1,106 @@
+---
+title: "Your Talk Title"
+subtitle: "Single-file plain-text talks: live preview, crisp math, deterministic PDF"
+author: "Your Name<br>Affiliation · Venue · Date"
+format:
+  revealjs:
+    # Neutral default. To re-brand (UQ purple example), append the brand layer:
+    #   theme: [default, theme/_base.scss, theme/_brand-uq.scss]
+    theme: [default, theme/_base.scss]
+    logo: assets/logo-placeholder.svg
+    width: 1280
+    height: 720
+    center: false
+    slide-number: "c/t"
+    # Custom numbering: every slide is counted (printed number = true page position),
+    # but wave slides (cover, dividers, thank-you) don't SHOW their number.
+    include-after-body: assets/slidenum.html
+    # Preload the KaTeX woff2 faces so client-side math has its real fonts before any
+    # print snapshot. (render_pdf.py also waits for document.fonts.ready — belt + braces.)
+    include-in-header: assets/katex-preload.html
+    margin: 0.06
+    embed-resources: false
+    # KaTeX vendored locally (assets/katex/) — loads offline and stays crisp in the PDF.
+    html-math-method:
+      method: katex
+      url: assets/katex/
+---
+
+## Two-Column Layout
+
+:::::: {.columns}
+::::: {.column width="46%"}
+![](assets/demo/placeholder.svg)
+:::::
+
+::::: {.column width="54%"}
+- A **figure on the left**, text on the right
+- Replace `assets/demo/placeholder.svg` with your own image
+- Change the split via the `width="46%"` / `width="54%"` attributes
+- **Bold** marks a keyword — it renders in the accent colour
+:::::
+::::::
+
+::: notes
+This is the two-column layout: a fenced `::: {.columns}` holding two `::: {.column}`
+blocks. Portrait figures read sharpest left, text right. Speaker notes like this never
+show on the slide — they go to the PDF notes and the presenter view. Put the "how to
+edit this" detail here so the visible slide stays clean.
+:::
+
+## Math Renders Crisply
+
+Client-side KaTeX, vendored locally. Write `$...$` inline, or `$$...$$` for a block:
+
+$$\mathcal{J}_{\text{GRPO}}(\theta)=\mathbb{E}\!\left[\frac{1}{G}\sum_{i=1}^{G}\frac{1}{|o_i|}\sum_{t}\min\!\big(r_{i,t}\,\hat{A}_{i,t},\;\operatorname{clip}(r_{i,t},1-\varepsilon,1+\varepsilon)\,\hat{A}_{i,t}\big)-\beta\,\mathbb{D}_{\text{KL}}\big(\pi_\theta\,\|\,\pi_{\text{ref}}\big)\right]$$
+
+- The PDF driver waits for `document.fonts.ready`, so math never falls back to Times
+- Notation like `\boldsymbol`, `\mathcal`, `\operatorname` all render
+
+::: notes
+This GRPO objective is the deck's built-in regression test for the PDF pipeline: if the
+KaTeX webfonts ever lose the race to the print snapshot, this slide is where it shows.
+:::
+
+## [01]{.chapnum} Section Divider {.divider background-image="assets/divider.svg" background-size="cover"}
+
+::: pubtitle
+A full-bleed wave divider between sections
+:::
+
+::: pubmeta
+Optional subtitle or publication line · venue
+:::
+
+## Stacked Layout
+
+![](assets/demo/placeholder.svg){.centerfig}
+
+- Use a **figure on top, bullets below** when a figure is wide
+- Tag a full-width image `{.bigfig}` to opt out of the inline height cap, or
+  `{.centerfig}` (used here) to centre it with a sensible cap
+- Good for wide diagrams and side-by-side panels
+
+::: notes
+Wide figures read better stacked (figure on top spanning the width, bullets beneath)
+than squeezed into a column. Portrait figures read better in the two-column layout.
+:::
+
+## Bullets, Hand-off and Notes
+
+- Regular bullets carry the body text
+  - nested bullets read at the same size, slightly indented
+- **Bold** highlights a keyword in the accent colour
+
+::: transition
+A transition line — accent, sits low on the slide, hands off to the next idea →
+:::
+
+::: notes
+Two reusable blocks shown here: `::: transition` (the accent hand-off line) and these
+speaker notes. A `::: caption` block (grey, auto-pinned to the slide foot) is also
+available for figure sources — see docs/CONVENTIONS.md. Keep visible copy short; push
+detail into the notes.
+:::
+
+## Thank You {.oncolor background-image="assets/thankyou.svg" background-size="cover" data-state="oncolor"}

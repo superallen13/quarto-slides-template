@@ -1,0 +1,225 @@
+/*-- scss:defaults --*/
+// ── Neutral base theme ───────────────────────────────────────────────────────
+// Typography, colour, and a set of HARD-WON structural fixes (see scss:rules).
+// To re-brand, layer a second file that overrides these variables, e.g.
+//   theme: [default, theme/_base.scss, theme/_brand-uq.scss]
+// Every variable is `!default`, so a later brand layer wins.
+
+$accent: #34618C !default;   // accent / keyword highlight (a brand layer overrides this)
+$body:   #262626 !default;   // body text
+$muted:  #6B6B6B !default;   // captions / source lines
+$grey:   #8C8C8C !default;   // cover author line
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
+
+$font-family-sans-serif: 'Nunito', system-ui, sans-serif !default;
+$body-bg: #ffffff !default;
+$body-color: $body;
+$link-color: $accent;
+$presentation-heading-color: $body;
+$presentation-heading-font-weight: 800;
+$presentation-font-size-root: 30px;
+
+/*-- scss:rules --*/
+// semantic accents for ok / no marks — universal, kept out of the brand layer
+$ok:  #1f8a6b;
+$bad: #E0533B;
+
+.reveal .slides { text-align: left; }
+
+// content-slide title: accent underline
+.reveal h2 {
+  border-bottom: 3px solid $accent;
+  padding-bottom: .12em;
+  display: inline-block;
+}
+
+// the accent keyword highlight == bold
+.reveal strong { color: $accent; font-weight: 800; }
+
+// nested detail bullets read the same as body text (size + colour)
+.reveal ul ul { font-size: 1em; }
+
+// GOTCHA: Quarto/reveal computes a slide's top-level list as inline-block (origin is a
+// nested @media rule, invisible to a flat stylesheet scan). Because the h2 is also
+// inline-block (for its underline), a SHORT list then flows UP beside the heading
+// instead of below it. Force a slide's direct-child lists to block. The `> ul` guard
+// leaves two-column lists and .agenda lists untouched.
+.reveal .slides section.slide > ul,
+.reveal .slides section.slide > ol { display: block !important; }
+
+// figures
+.reveal img { border-radius: 4px; }
+// GOTCHA: cap inline figures so an unbounded image can't push bullets off-page and clip
+// them in the PDF. Must NOT clamp full-slide auto-stretch images (r-stretch sets its own
+// fill height; a global max-height collapses them).
+.reveal img:not(.r-stretch) { max-height: 340px; }
+
+// full-bleed concept figures that opt out of reveal's auto-stretch (r-stretch mis-sizes
+// images whose aspect ratio is close to the slide's, collapsing them to nothing).
+.reveal img.bigfig { max-height: none; display: block; margin: 0 auto; }
+
+// centre an inline figure (keeps a cap; breaks it out of the left-aligned paragraph flow
+// so it sits in the middle, leaving room for bullets below).
+.reveal img.centerfig { display: block; margin: 0 auto; max-height: 400px; width: auto; }
+
+// grey source / caption line — colour + size here; position handled below.
+.reveal .caption { color: $muted; font-size: .58em; }
+
+// GOTCHA: pin the grey ::: caption (source / citation strip) to the slide foot, never
+// floating up under short content. reveal lays each slide out at content-height
+// (center:false), so we (1) give a caption-bearing slide the full slide height, then
+// (2) absolutely pin its caption to the foot, clear of the centre slide number. Live uses
+// the fixed slide box; print uses the full page — the same split the dividers use.
+.reveal .slides section.slide:has(.caption) {
+  box-sizing: border-box;
+  padding-bottom: 74px !important;
+}
+html:not(.print-pdf) .reveal .slides section.slide:has(.caption) { height: 720px !important; }
+html.print-pdf      .reveal .slides section.slide:has(.caption) { min-height: 100vh; }
+.reveal section.slide:has(.caption) .caption {
+  position: absolute; left: 0; right: 0; bottom: 52px; margin: 0;
+}
+
+// accent hand-off / transition line — plain weight + body size (needn't shout)
+.reveal .transition { color: $accent; font-weight: 400; font-size: 1em; margin-top: .55em; }
+
+// cover
+.reveal #title-slide .title { color: $accent; }
+.reveal #title-slide .subtitle { color: $accent; font-weight: 800; }
+.reveal #title-slide .author { color: $grey; font-size: .6em; font-weight: 600; }
+
+// GOTCHA: two-column slides. Quarto's theme resets div.columns to display:initial (inline)
+// and div.column to inline-block, which collapses two-column layout unreliably (columns
+// wrap and stack). Force real flexbox so figure-beside-bullets renders side by side.
+.reveal .columns { display: flex !important; gap: min(4vw, 1.5em); align-items: center; }
+.reveal .column { display: block; }
+.reveal .column img { max-height: 460px; margin-top: 0; }
+.reveal .column img.tallfig { max-height: 580px; margin: 0 auto; display: block; }
+
+// parallel takeaway cards across one row: <div class="claimrow"> of equal cards (div not
+// ul, so the inline-block list gotcha doesn't apply). A leading .sym carries the relation.
+// NOTE: no box-shadow — Chrome's print path renders even a faint shadow as a grey halo.
+.reveal .claimrow { display: flex; gap: min(3vw, 1.1em); margin-top: .7em; align-items: stretch; }
+.reveal .claimrow .claim {
+  flex: 1; background: #F6F8FB; border: 1px solid #D3DEEA; border-radius: 10px; padding: .5em .8em;
+}
+.reveal .claimrow .claim > * { margin: 0; }
+
+// GOTCHA: symbols (↑ ≈ → =): Nunito has no arrow / approx glyph, so the print path
+// substitutes a wavy serif-ish glyph. Pin a clean geometric-sans fallback.
+.reveal .sym {
+  font-family: 'Nunito', 'Helvetica Neue', Arial, sans-serif;
+}
+.reveal .claimrow .sym { color: $accent; font-weight: 800; margin-right: .35em; }
+
+// comparison table (booktabs look): horizontal rules only, no fills / zebra / shadow, no
+// colour. The "ours" row is set off by a rule above it + bold. ✓ / ✗ pinned to the
+// Helvetica fallback (the .sym lesson) so print renders the glyph, not a serif mark.
+.reveal table.cmptable {
+  border-collapse: collapse; width: 100%;
+  font-size: .82em; line-height: 1.15; color: $body; margin: .15em 0 .55em;
+}
+.reveal table.cmptable th,
+.reveal table.cmptable td { padding: .4em .55em; text-align: center; vertical-align: middle; border: none; }
+.reveal table.cmptable thead th { font-weight: 800; border-top: 2px solid $body; border-bottom: 1.2px solid $body; }
+.reveal table.cmptable th.model,
+.reveal table.cmptable td.model { text-align: left; font-weight: 700; white-space: nowrap; }
+.reveal table.cmptable .yes,
+.reveal table.cmptable .no { font-family: 'Helvetica Neue', Arial, sans-serif; font-weight: 800; color: $body; }
+.reveal table.cmptable .src { display: block; font-size: .7em; font-weight: 600; color: $muted; margin-top: .05em; }
+.reveal table.cmptable tr.ours td { border-top: 1.2px solid $body; font-weight: 800; }
+.reveal table.cmptable tbody tr:last-child td { border-bottom: 2px solid $body; }
+
+// section-divider publication line
+.reveal h2 .chapnum { color: $accent; }
+.reveal .pubtitle { font-size: .58em; color: $body; font-weight: 600; font-style: italic; margin-top: .6em; line-height: 1.3; max-width: 80%; }
+.reveal .pubmeta  { font-size: .5em; color: $muted; margin-top: .25em; }
+
+// section dividers: centred, the title is the hero. chapter / section name -> spaced
+// kicker, big breath, then the title, a short accent rule, then the byline.
+.reveal .slide.divider { text-align: center; }
+.reveal .slide.divider h2 {
+  border-bottom: none; padding-bottom: 0;
+  font-size: .8em; font-weight: 700; color: $muted;
+  letter-spacing: .14em; text-transform: uppercase; margin: 0 0 1.15em;
+}
+.reveal .slide.divider h2 .chapnum { color: $accent; letter-spacing: .04em; }
+.reveal .slide.divider .pubtitle {
+  font-size: 1.16em; font-weight: 700; font-style: normal; color: $body;
+  line-height: 1.34; max-width: 58%; margin: 0 auto;
+}
+.reveal .slide.divider .pubmeta {
+  font-size: .62em; color: $muted; max-width: 90%;
+  margin: 1.5em auto 0; padding-top: 1.45em; position: relative;
+}
+.reveal .slide.divider .pubmeta::before {
+  content: ""; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 2.2em; height: 2px; border-radius: 2px; background: $accent;
+}
+
+// agenda / "you are here" — dim everything, light the current item ([text]{.here})
+.reveal .agenda { font-size: .9em; }
+.reveal .agenda ol > li { color: #9a9a9a; margin: .12em 0; }
+.reveal .agenda ul { margin-top: .05em; }
+.reveal .agenda ul li { color: #b4b4b4; list-style: none; }
+.reveal .agenda ul li::before { content: "– "; color: #c8c8c8; }
+.reveal .agenda .here { color: $accent; font-weight: 800; }
+
+// logo: top-right corner on every slide (Quarto `logo:` injects .slide-logo).
+// !important is required: reveal's generic `img:not(.r-stretch)` out-specifies a plain
+// `.slide-logo`, otherwise the logo renders full-width.
+.reveal .slide-logo {
+  position: fixed !important;
+  top: 20px !important; right: 24px !important; bottom: auto !important; left: auto !important;
+  height: 44px !important; width: auto !important;
+  max-width: none !important; max-height: none !important;
+  margin: 0 !important; z-index: 20 !important;
+}
+
+// GOTCHA: section dividers use reveal's NATIVE per-slide background (the heading carries
+// background-image="..." background-size="cover"). `cover` fits a 16:9 image onto the 16:9
+// page EXACTLY, sidestepping the Chrome-print bug that clips a *stretched* (100% 100%) CSS
+// background to a left sliver. The divider text is flex-centred and lifted clear of the
+// wave by padding-bottom. Pin the section per mode — live's fixed box; print's 100vh +
+// border-box (which keeps reveal's print padding inside the page, else it spills a 2nd page).
+.reveal .slides section.slide.divider {
+  display: flex !important; flex-direction: column; align-items: center; justify-content: center;
+  box-sizing: border-box; padding: 0 0 6% !important;
+}
+html:not(.print-pdf) .reveal .slides section.slide.divider {
+  position: absolute !important; inset: 0 !important; height: 720px !important;
+}
+html.print-pdf .reveal .slides section.slide.divider { min-height: 100vh; }
+
+// closing / thank-you slide: white text + white logo over the accent wave.
+// `.oncolor` styles the slide; data-state="oncolor" puts the class on .reveal so the
+// corner logo can be recoloured to white.
+.reveal .slide.oncolor,
+.reveal .slide.oncolor h2,
+.reveal .slide.oncolor strong { color: #fff; }
+.reveal .slide.oncolor h2 { border-bottom-color: rgba(255, 255, 255, .6); }
+.reveal.oncolor .slide-logo { filter: brightness(0) invert(1); }
+
+// slide number: bottom-right, muted, no dark pill. This block only POSITIONS/STYLES the
+// number; the TEXT (which slides show a number, the "/ total", any appendix count) is owned
+// by assets/slidenum.html (injected via include-after-body). Two nodes exist: the live
+// `.slide-number` and reveal's per-page `.slide-number-pdf`; hide the live one in print so
+// they don't overlap, and style the per-page node to match.
+.reveal .slide-number {
+  position: fixed !important;
+  top: auto !important; bottom: 12px !important; left: auto !important; right: 16px !important;
+  width: auto !important; height: auto !important; transform: none !important;
+  text-align: right !important; white-space: nowrap !important; line-height: 1 !important;
+  background-color: transparent !important; color: $muted; font-size: .5em; font-weight: 600;
+}
+.reveal .slide-number a { color: $muted; }
+.print-pdf .reveal .slide-number:not(.slide-number-pdf) { display: none !important; }
+.reveal .slide-number-pdf {
+  position: absolute !important;
+  top: auto !important; bottom: 18px !important; left: auto !important; right: 24px !important;
+  width: auto !important; height: auto !important;
+  text-align: right !important; white-space: nowrap !important; line-height: 1 !important;
+  font-size: 16px !important; font-weight: 600 !important; color: $muted !important;
+  visibility: visible !important;
+}

@@ -1,0 +1,20 @@
+---
+title: "render_pdf fixture"
+format:
+  revealjs:
+    theme: default
+    width: 1280
+    height: 720
+    embed-resources: false
+    html-math-method:
+      method: katex
+      url: ../../assets/katex/
+---
+
+## Figure
+
+![](sample.png)
+
+## GRPO objective
+
+$$\mathcal{J}_{\text{GRPO}}(\theta)=\mathbb{E}\!\left[\frac{1}{G}\sum_{i=1}^{G}\min\!\big(r_{i}\hat{A}_{i},\operatorname{clip}(r_i,1-\varepsilon,1+\varepsilon)\hat{A}_i\big)-\beta\,\mathbb{D}_{\text{KL}}(\pi_\theta\|\pi_{\text{ref}})\right]$$

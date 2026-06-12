@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Section divider wave">
+  <!-- Neutral section-divider wave. Recolour the two fills for your brand, or replace
+       this file entirely. background-size="cover" on the slide fits this 16:9 art onto
+       the 16:9 page exactly (see the divider GOTCHA in theme/_base.scss). -->
+  <rect width="1280" height="720" fill="#ffffff"/>
+  <path d="M0 556 C 230 496, 430 624, 690 562 S 1120 500, 1280 560 L1280 720 L0 720 Z" fill="#34618C" fill-opacity="0.14"/>
+  <path d="M0 624 C 270 560, 470 684, 728 620 S 1150 582, 1280 632 L1280 720 L0 720 Z" fill="#34618C"/>
+</svg>

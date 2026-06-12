@@ -1,0 +1,100 @@
+<!-- Custom slide numbering (injected via include-after-body in slides.qmd).
+     Rules:
+       * EVERY slide consumes a number — including the wave / transition slides — so the
+         visible numbers equal the true page position (no gaps, no shift). Transition slides
+         just don't DISPLAY their own number: the cover (#title-slide), every section divider
+         (.divider, incl. the "Appendix" divider), and the thank-you (.oncolor).
+       * The body counts 1..N from the cover through the thank-you (so the cover is 1 hidden,
+         the agenda is 2, ...).
+       * The appendix is an independent count that starts at the #appendix divider (which is
+         appendix page 1, hidden) — so the first appendix content slide shows "2".
+     reveal's built-in counter (slide-number: c/t) still creates the live `.slide-number` node
+     and a per-page `.slide-number-pdf` node; we keep those for positioning/styling (see
+     theme.scss) and only rewrite their text — or hide them on the transition slides. -->
+<script>
+(function () {
+  function isHidden(sec) {
+    return !sec
+      || sec.id === 'title-slide'
+      || sec.classList.contains('divider')
+      || sec.classList.contains('oncolor');
+  }
+
+  // Walk slides in document order; return one entry per slide: {n, total, appx, show}.
+  // Every slide increments its section's counter (transition slides included); `show` is false
+  // on transition slides so they consume a number without printing one. Body and appendix are
+  // separate counters; the appendix counter begins at the #appendix divider.
+  function plan(sections) {
+    var items = [], body = 0, appx = 0, inAppx = false;
+    for (var i = 0; i < sections.length; i++) {
+      var s = sections[i];
+      if (s && s.id === 'appendix') inAppx = true;   // the Appendix divider -> rest is appendix
+      var n = inAppx ? ++appx : ++body;
+      items.push({ n: n, appx: inAppx, show: !isHidden(s) });
+    }
+    for (var j = 0; j < items.length; j++) {
+      items[j].total = items[j].appx ? appx : body;
+    }
+    return items;
+  }
+
+  // LIVE: hand reveal a `slideNumber` FORMAT FUNCTION instead of rewriting the node ourselves.
+  // Rewriting `.slide-number` on 'slidechanged' loses a race — reveal also refreshes the number
+  // on 'resize' and on post-font-load re-syncs (no 'slidechanged' fires there), clobbering our
+  // text back to the default "c/t". A format function makes reveal call US on every refresh, so
+  // there is nothing to clobber. NOTE reveal's contract: the function must return an ARRAY that
+  // reveal feeds to formatNumber(a, delimiter, b) — a plain string is read char-by-char (only
+  // value[0] survives). So return [n, ' / ', total]; ['' ] renders empty (b is not a number),
+  // which is what we want on the transition slides.
+  function runLive(deck) {
+    var sections = [].slice.call(document.querySelectorAll('.reveal .slides > section'));
+    var items = plan(sections);
+    deck.configure({
+      slideNumber: function (slide) {
+        var idx = sections.indexOf(slide || deck.getCurrentSlide());
+        var it = idx >= 0 ? items[idx] : null;
+        return (it && it.show) ? [it.n, ' / ', it.total] : [''];
+      }
+    });
+  }
+
+  // PRINT: reveal builds one `.pdf-page` per slide, each with its own `.slide-number-pdf`.
+  // Returns true once at least one number node was found and written.
+  function applyPDF() {
+    var pages = [].slice.call(document.querySelectorAll('.reveal .pdf-page'));
+    if (!pages.length) return false;
+    var sections = pages.map(function (pg) { return pg.querySelector('section'); });
+    var items = plan(sections);
+    var wrote = false;
+    pages.forEach(function (pg, i) {
+      var num = pg.querySelector('.slide-number-pdf');
+      if (!num) return;
+      wrote = true;
+      var it = items[i];
+      if (!it || !it.show) { num.style.display = 'none'; return; }
+      num.style.display = '';
+      num.textContent = it.n + ' / ' + it.total;
+    });
+    return wrote;
+  }
+
+  // .pdf-page / .slide-number-pdf are created during reveal's print setup; poll until present,
+  // then re-apply once more in case nodes were still being added.
+  function pollPDF(tries) {
+    tries = tries || 0;
+    if (applyPDF()) { setTimeout(applyPDF, 400); return; }
+    if (tries > 100) return;
+    setTimeout(function () { pollPDF(tries + 1); }, 100);
+  }
+
+  function boot() {
+    var printing = /print-pdf/.test(window.location.search)
+      || !!document.querySelector('.print-pdf');
+    if (printing) { pollPDF(); return; }
+    if (typeof Reveal === 'undefined') { setTimeout(boot, 50); return; }
+    if (Reveal.isReady && Reveal.isReady()) runLive(Reveal);
+    else Reveal.on('ready', function () { runLive(Reveal); });
+  }
+  boot();
+})();
+</script>

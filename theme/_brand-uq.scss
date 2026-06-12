@@ -1,0 +1,17 @@
+/*-- scss:defaults --*/
+// ── UQ brand layer (example) ─────────────────────────────────────────────────
+// Layer this AFTER _base.scss to recolour the deck to University of Queensland
+// purple:
+//   theme: [default, theme/_base.scss, theme/_brand-uq.scss]
+//
+// Colour is all you need for a re-brand. To go further, also swap:
+//   * the corner logo  — the YAML `logo:` field in slides.qmd
+//   * the divider / closing waves — the per-slide `background-image=` attrs in slides.qmd
+// for your institution's assets.
+//
+// NOTE: this template does NOT ship UQ's trademarked logo or wave images. This file is a
+// worked example of HOW to brand (the colour override + the swap instructions above), not
+// a drop-in UQ kit. Supply your own logo.png and divider/thankyou SVGs.
+
+$accent: #51247A !default;   // UQ purple
+$grey:   #999490 !default;   // UQ dk2 — cover author line

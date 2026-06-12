@@ -1,0 +1,36 @@
+<!--
+  Eagerly preload the KaTeX woff2 faces so the headless-Chrome PDF export is DETERMINISTIC.
+
+  Math is rendered client-side by katex.min.js on DOMContentLoaded; its webfonts are otherwise
+  loaded LAZILY (only when a glyph needing them is laid out). The --virtual-time-budget snapshot
+  then races that late font swap: it wins ~1-in-6 prints, so to_pdf.sh's 8-attempt retry shipped a
+  Times-fallback PDF (0 KaTeX faces) whenever the dice came up cold (~23% of runs).
+
+  Preloading forces every face to fetch at PARSE time; the virtual clock waits for these in-flight
+  requests, so the fonts are present before KaTeX lays the math out — every print embeds the faces.
+  Measured: 1/6 -> 6/6. crossorigin is REQUIRED — @font-face fetches in CORS mode, and a preload
+  without it won't be reused (it would re-fetch lazily and the race returns).
+
+  Faces match assets/katex/fonts/*.woff2; if KaTeX is re-vendored with a different face set,
+  regenerate:  for f in assets/katex/fonts/*.woff2; do printf '<link rel="preload" as="font" type="font/woff2" href="%s" crossorigin>\n' "$f"; done
+-->
+<link rel="preload" as="font" type="font/woff2" href="assets/katex/fonts/KaTeX_AMS-Regular.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="assets/katex/fonts/KaTeX_Caligraphic-Bold.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="assets/katex/fonts/KaTeX_Caligraphic-Regular.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="assets/katex/fonts/KaTeX_Fraktur-Bold.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="assets/katex/fonts/KaTeX_Fraktur-Regular.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="assets/katex/fonts/KaTeX_Main-Bold.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="assets/katex/fonts/KaTeX_Main-BoldItalic.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="assets/katex/fonts/KaTeX_Main-Italic.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="assets/katex/fonts/KaTeX_Main-Regular.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="assets/katex/fonts/KaTeX_Math-BoldItalic.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="assets/katex/fonts/KaTeX_Math-Italic.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="assets/katex/fonts/KaTeX_SansSerif-Bold.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="assets/katex/fonts/KaTeX_SansSerif-Italic.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="assets/katex/fonts/KaTeX_SansSerif-Regular.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="assets/katex/fonts/KaTeX_Script-Regular.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="assets/katex/fonts/KaTeX_Size1-Regular.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="assets/katex/fonts/KaTeX_Size2-Regular.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="assets/katex/fonts/KaTeX_Size3-Regular.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="assets/katex/fonts/KaTeX_Size4-Regular.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="assets/katex/fonts/KaTeX_Typewriter-Regular.woff2" crossorigin>

@@ -1,0 +1,11 @@
+# macOS junk
+.DS_Store
+# rendered outputs (Quarto writes <stem>.html + <stem>_files/ next to the qmd)
+/slides*.html
+tests/fixtures/*.html
+*_files/
+slides.pdf
+.quarto/
+# python
+__pycache__/
+.pytest_cache/

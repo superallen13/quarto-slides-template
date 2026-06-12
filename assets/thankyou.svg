@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Closing wave">
+  <!-- Neutral closing / thank-you background (full accent fill). The .oncolor slide sets
+       the text + logo to white over this. Recolour the base fill for your brand. -->
+  <rect width="1280" height="720" fill="#34618C"/>
+  <path d="M0 0 C 240 78, 440 -22, 700 54 S 1120 86, 1280 30 L1280 0 Z" fill="#ffffff" fill-opacity="0.07"/>
+  <path d="M0 720 C 240 648, 470 742, 728 668 S 1150 702, 1280 660 L1280 720 Z" fill="#000000" fill-opacity="0.08"/>
+</svg>
