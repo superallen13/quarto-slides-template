@@ -22,12 +22,13 @@ from pathlib import Path
 DECK = Path(__file__).resolve().parent.parent
 SLIDES = DECK / "slides.qmd"
 
-# A brand bundles a colour layer + a logo + the two wave images. To add your own,
-# copy theme/_brand-uq.scss and the assets/<name>-*.{png,svg}, then add an entry here.
+# A brand bundles a colour layer + an (optional) logo + the two wave images. To add your
+# own, copy theme/_brand-uq.scss and the assets/<name>-*.{png,svg}, then add an entry here.
+# `logo: None` ships no corner logo (the neutral default).
 BRANDS = {
     "neutral": {
         "theme": "[default, theme/_base.scss]",
-        "logo": "assets/logo-placeholder.svg",
+        "logo": None,
         "divider": "assets/divider.svg",
         "thankyou": "assets/thankyou.svg",
     },
@@ -56,7 +57,15 @@ def set_brand(text: str, brand: str) -> str:
     b = BRANDS[brand]
     # theme list — match the real YAML line, never the commented example (`#   theme:`)
     text = re.sub(r'(?m)^(\s*)theme:\s*\[[^\]]*\]', rf'\1theme: {b["theme"]}', text)
-    text = re.sub(r'(?m)^(\s*)logo:\s*\S+', rf'\1logo: {b["logo"]}', text)
+    # logo: replace / insert / remove depending on whether this brand carries one
+    if b["logo"]:
+        if re.search(r'(?m)^\s*logo:\s*\S+', text):
+            text = re.sub(r'(?m)^(\s*)logo:\s*\S+', rf'\1logo: {b["logo"]}', text)
+        else:  # insert a logo line right after the theme line (same indent)
+            text = re.sub(r'(?m)^(\s*)theme:(\s*\[[^\]]*\])',
+                          rf'\1theme:\2\n\1logo: {b["logo"]}', text, count=1)
+    else:
+        text = re.sub(r'(?m)^\s*logo:\s*\S+\n', '', text)   # neutral: no corner logo
     text = re.sub(r'assets/(?:\w+-)?divider\.svg', b["divider"], text)
     text = re.sub(r'assets/(?:\w+-)?thankyou\.svg', b["thankyou"], text)
     return text

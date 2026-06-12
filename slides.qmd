@@ -1,13 +1,17 @@
 ---
 title: "Your Talk Title"
-subtitle: "Single-file plain-text talks: live preview, crisp math, deterministic PDF"
+subtitle: "Single-file plain-text talks: live preview, crisp math, one-command PDF"
 author: "Your Name<br>Affiliation · Venue · Date"
 format:
   revealjs:
     # Neutral default. To re-brand (UQ purple example), append the brand layer:
     #   theme: [default, theme/_base.scss, theme/_brand-uq.scss]
     theme: [default, theme/_base.scss]
-    logo: assets/logo-placeholder.svg
+    # Neutral default ships no corner logo. `init.py --brand uq` adds one.
+    # Cover gets the same wave footer as the dividers (init.py swaps this per brand).
+    title-slide-attributes:
+      data-background-image: assets/divider.svg
+      data-background-size: cover
     width: 1280
     height: 720
     center: false
@@ -52,7 +56,12 @@ edit this" detail here so the visible slide stays clean.
 
 Client-side KaTeX, vendored locally. Write `$...$` inline, or `$$...$$` for a block:
 
-$$\mathcal{J}_{\text{GRPO}}(\theta)=\mathbb{E}\!\left[\frac{1}{G}\sum_{i=1}^{G}\frac{1}{|o_i|}\sum_{t}\min\!\big(r_{i,t}\,\hat{A}_{i,t},\;\operatorname{clip}(r_{i,t},1-\varepsilon,1+\varepsilon)\,\hat{A}_{i,t}\big)-\beta\,\mathbb{D}_{\text{KL}}\big(\pi_\theta\,\|\,\pi_{\text{ref}}\big)\right]$$
+$$
+\begin{aligned}
+\mathcal{J}_{\text{GRPO}}(\theta) &= \mathbb{E}\!\left[\,\tfrac{1}{G}\sum_{i=1}^{G}\tfrac{1}{|o_i|}\sum_{t}\min\big(r_{i,t}\,\hat{A}_{i,t},\;\operatorname{clip}(r_{i,t},1-\varepsilon,1+\varepsilon)\,\hat{A}_{i,t}\big)\right.\\
+&\qquad\left.-\;\beta\,\mathbb{D}_{\text{KL}}\big(\pi_\theta\,\|\,\pi_{\text{ref}}\big)\right]
+\end{aligned}
+$$
 
 - The PDF driver waits for `document.fonts.ready`, so math never falls back to Times
 - Notation like `\boldsymbol`, `\mathcal`, `\operatorname` all render

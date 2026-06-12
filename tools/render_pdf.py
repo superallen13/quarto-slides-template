@@ -76,6 +76,17 @@ def print_pdf(html_url_path: str, pdf: Path, port: int) -> None:
             "() => Array.from(document.images).every(i => i.complete && i.naturalWidth > 0)",
             timeout=120_000,
         )
+        # reveal's print-pdf plugin wraps each slide in a `.pdf-page`; that pagination runs
+        # in JS AFTER load. Poll the `.pdf-page` count until it has STARTED (> 0) and SETTLED
+        # (unchanged between checks). Without this, page.pdf() can fire before/mid-pagination
+        # and emit a single un-paginated page instead of one page per slide.
+        prev = -1
+        for _ in range(150):            # ~15s ceiling; normally settles in a few ticks
+            n = page.evaluate("document.querySelectorAll('.reveal .pdf-page').length")
+            if n > 0 and n == prev:
+                break
+            prev = n
+            page.wait_for_timeout(100)
         page.pdf(path=str(pdf), prefer_css_page_size=True, print_background=True)
         browser.close()
 

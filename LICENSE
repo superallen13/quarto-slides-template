@@ -24,7 +24,7 @@ SOFTWARE.
 
 NOTE: This license covers the template's code, styles, and demo placeholder assets.
 The University of Queensland logo and wave assets (assets/uq-*) are the property of
-the University of Queensland and are NOT covered by this license; they are included
+The University of Queensland and are NOT covered by this license; they are included
 only as a worked branding example. Replace them with your own assets for any non-UQ use.
 The vendored KaTeX fonts/CSS under assets/katex/ are distributed under KaTeX's own
 MIT license.

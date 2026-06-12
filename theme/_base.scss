@@ -192,13 +192,27 @@ html:not(.print-pdf) .reveal .slides section.slide.divider {
 }
 html.print-pdf .reveal .slides section.slide.divider { min-height: 100vh; }
 
-// closing / thank-you slide: white text + white logo over the accent wave.
-// `.oncolor` styles the slide; data-state="oncolor" puts the class on .reveal so the
-// corner logo can be recoloured to white.
+// closing / thank-you slide: a big CENTRED title in white over the accent wave (NOT the
+// top-left + underline of a normal content h2). `.oncolor` styles the slide; data-state=
+// "oncolor" puts the class on .reveal so the corner logo can be recoloured to white.
+// Centred the same way the dividers are: pin a one-page box per mode, then flex-centre.
+.reveal .slides section.slide.oncolor {
+  display: flex !important; flex-direction: column;
+  align-items: center; justify-content: center;
+  box-sizing: border-box; text-align: center;
+}
+html:not(.print-pdf) .reveal .slides section.slide.oncolor {
+  position: absolute !important; inset: 0 !important; height: 720px !important;
+}
+html.print-pdf .reveal .slides section.slide.oncolor { min-height: 100vh; }
 .reveal .slide.oncolor,
 .reveal .slide.oncolor h2,
 .reveal .slide.oncolor strong { color: #fff; }
-.reveal .slide.oncolor h2 { border-bottom-color: rgba(255, 255, 255, .6); }
+.reveal .slide.oncolor h2 {
+  border-bottom: none; padding: 0; display: block;
+  font-size: 2.5em; font-weight: 800; letter-spacing: -0.015em;
+}
+.reveal .slide.oncolor p { font-size: .72em; opacity: .85; margin-top: .4em; }
 .reveal.oncolor .slide-logo { filter: brightness(0) invert(1); }
 
 // slide number: bottom-right, muted, no dark pill. This block only POSITIONS/STYLES the

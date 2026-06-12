@@ -2,29 +2,30 @@
 
 A plain-text, single-file [Quarto](https://quarto.org) + reveal.js template for academic
 talks (thesis / seminar / conference). Write your whole talk in one markdown file, preview
-it live as you type, and export a deterministic PDF.
+it live as you type, and export to PDF in one command with your math and figures intact.
 
 - **Plain text, single file.** One `slides.qmd` is the whole talk: easy to edit, diff, and
   version-control. What you write is what renders.
 - **Live preview.** `quarto preview` hot-reloads the deck in your browser on every save.
 - **Crisp math.** Client-side KaTeX (vendored, offline); the PDF export waits for the
   webfonts, so formulas never fall back to Times.
-- **Deterministic PDF.** `python tools/render_pdf.py`: one pass, no render lottery.
+- **PDF that just works.** `python tools/render_pdf.py` exports the whole deck in one
+  command, with math and figures intact every time — no broken equations, no retries.
 - **Lightweight.** Quarto + Python + Playwright. No node, npm, or decktape.
 
 ## Two built-in themes
 
-A neutral default and a University of Queensland example, switchable with one command
-(`python tools/init.py --brand uq`). Same `slides.qmd`, different brand bundle — cover,
-a math slide, and the closing wave:
+A neutral default and an example for The University of Queensland, switchable with one
+command (`python tools/init.py --brand uq`). Same `slides.qmd`, different brand bundle:
+cover, a math slide, and the closing wave.
 
 **Neutral** (default)
 
 ![Neutral theme preview: cover, math slide, closing wave](assets/preview/neutral.png)
 
-**University of Queensland**
+**The University of Queensland**
 
-![University of Queensland theme preview: cover, math slide, closing wave](assets/preview/uq.png)
+![The University of Queensland theme preview: cover, math slide, closing wave](assets/preview/uq.png)
 
 ## Quickstart
 
@@ -77,7 +78,7 @@ The deck ships **neutral** by default. A brand is a small bundle — a colour la
 logo and two wave images — and `init.py` wires them together for you:
 
 ```bash
-python tools/init.py --brand uq        # University of Queensland purple + waves
+python tools/init.py --brand uq        # The University of Queensland purple + waves
 python tools/init.py --brand neutral   # back to the neutral default
 ```
 
@@ -93,7 +94,7 @@ slides.qmd            ← the single content source (edit this)
 theme/_base.scss      neutral theme + structural fixes baked in as CSS
 theme/_brand-uq.scss  UQ colour layer (example of how to brand)
 assets/               vendored KaTeX, slide numbering, logo + wave SVGs, demo placeholder
-tools/render_pdf.py   deterministic Quarto→PDF (Playwright)
+tools/render_pdf.py   one-command Quarto→PDF that doesn't break math (Playwright)
 tools/init.py         scaffold: brand / title / author / clear
 docs/CONVENTIONS.md   authoring conventions + the gotchas handled for you
 tests/                a render regression test (math + figure land in the PDF)
