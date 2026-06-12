@@ -14,6 +14,4 @@
   <path d="M0 540 C 220 500 420 560 640 588 C 880 618 1100 600 1280 626 L1280 720 L0 720 Z" fill="#DDE9F5"/>
   <!-- main gradient wave -->
   <path d="M0 600 C 240 556 470 612 700 634 C 930 656 1120 648 1280 668 L1280 720 L0 720 Z" fill="url(#dividerWave)"/>
-  <!-- accent hairline floating just above the crest -->
-  <path d="M0 586 C 240 542 470 598 700 620 C 930 642 1120 634 1280 654" fill="none" stroke="#34618C" stroke-opacity=".4" stroke-width="3"/>
 </svg>
